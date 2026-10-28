@@ -1,18 +1,17 @@
 FROM python:3.12-slim
 
+# Copy uv binary from official image for ultra-fast builds
+COPY --from=ghcr.io/astral-sh/uv:latest /uv /bin/uv
+
 ENV PYTHONDONTWRITEBYTECODE=1 \
     PYTHONUNBUFFERED=1 \
-    PIP_NO_CACHE_DIR=1
+    UV_SYSTEM_PYTHON=1
 
 WORKDIR /app
 
-# Install system dependencies if required for fonts or image processing
-RUN apt-get update && apt-get install -y --no-install-recommends \
-    curl \
-    && rm -rf /var/lib/apt/lists/*
-
-COPY requirements.txt .
-RUN pip install --upgrade pip && pip install -r requirements.txt
+# Install dependencies deterministically via uv
+COPY pyproject.toml uv.lock ./
+RUN uv pip install --system -r pyproject.toml
 
 COPY app/ ./app/
 

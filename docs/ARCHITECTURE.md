@@ -105,3 +105,4 @@ app/engine/layouts/
 ```
 
 The main presentation compiler loop [`app/engine/compiler.py`](file:///d:/lab/projects/DeckBridge/app/engine/compiler.py) initializes the presentation, dispatches each slide model to its respective builder, and streams the resulting `.pptx` directly from an `io.BytesIO()` buffer.
+

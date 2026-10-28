@@ -39,15 +39,13 @@ DeckDispatch supports discriminated union slide types with dual `camelCase` and 
 
 ### 1. Installation
 ```bash
-# Using uv (recommended)
-uv venv
-.venv\Scripts\Activate.ps1  # or source .venv/bin/activate on Linux/macOS
-uv pip install -r requirements.txt
+# Clone and install dependencies with uv lockfile
+uv sync
 ```
 
 ### 2. Run the Server
 ```bash
-uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 ```
 Open [http://localhost:8000/docs](http://localhost:8000/docs) to access the interactive Swagger UI.
 
@@ -71,7 +69,7 @@ curl -X POST "http://localhost:8000/v1/decks/compile" \
 
 ### 4. Run Automated Tests
 ```bash
-pytest -v tests/
+uv run pytest -v tests/
 ```
 
 ---
@@ -90,3 +88,4 @@ Explore the comprehensive documentation under [`docs/`](file:///d:/lab/projects/
 
 ## License
 MIT
+

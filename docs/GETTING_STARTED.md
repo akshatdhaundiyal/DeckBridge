@@ -14,23 +14,20 @@ This guide walks you through setting up, running, testing, and containerizing De
 
 ## 2. Local Setup
 
-### Using `uv` (Fastest)
+### Using `uv` (Recommended)
 
 ```bash
 # 1. Clone or navigate to the project directory
 cd DeckBridge
 
-# 2. Create virtual environment
-uv venv
+# 2. Sync virtual environment and dependencies using pyproject.toml & uv.lock
+uv sync
 
-# 3. Activate virtual environment
-# Windows PowerShell:
-.venv\Scripts\Activate.ps1
-# macOS/Linux:
-source .venv/bin/activate
+# 3. Run FastAPI server directly via uv
+uv run uvicorn app.main:app --host 0.0.0.0 --port 8000 --reload
 
-# 4. Install dependencies
-uv pip install -r requirements.txt
+# 4. Run test suite directly via uv
+uv run pytest -v tests/
 ```
 
 ### Using standard `pip`
@@ -98,3 +95,4 @@ docker run -d --name deckdispatch -p 8000:8000 deckdispatch:latest
 ```bash
 curl http://localhost:8000/health
 ```
+
