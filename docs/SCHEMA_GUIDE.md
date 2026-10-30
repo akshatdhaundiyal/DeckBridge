@@ -220,3 +220,56 @@ Generates 2 to 5 sequential process steps using native PowerPoint vector AutoSha
 }
 ```
 
+---
+
+### 2.7 Chart Slide (`layout: "chart"`)
+Embeds native Microsoft OpenXML charts (Column Clustered, Bar Clustered, Line, Pie, Area) with an embedded editable Excel worksheet. Users opening the `.pptx` in PowerPoint or Google Slides can right-click the chart and choose **Edit Data** to update numbers directly.
+
+#### Column / Bar Clustered Chart:
+```json
+{
+  "layout": "chart",
+  "kicker": "FINANCIAL PERFORMANCE",
+  "title": "Quarterly ARR Trajectory",
+  "subtitle": "Year-over-Year Comparative Growth",
+  "chart": {
+    "chartType": "column_clustered",
+    "categories": ["Q1", "Q2", "Q3", "Q4"],
+    "series": [
+      {
+        "name": "2025",
+        "values": [1.2, 1.8, 2.4, 3.1]
+      },
+      {
+        "name": "2026",
+        "values": [2.0, 3.2, 4.5, 6.0],
+        "color": "2563EB"
+      }
+    ],
+    "showLegend": true,
+    "showDataLabels": true
+  }
+}
+```
+
+#### Pie Chart (Market Share / Distribution):
+```json
+{
+  "layout": "chart",
+  "kicker": "MARKET SHARE",
+  "title": "Enterprise Cloud Footprint",
+  "chart": {
+    "chartType": "pie",
+    "categories": ["North America", "EMEA", "APAC", "LATAM"],
+    "series": [
+      {
+        "name": "Market Share %",
+        "values": [42.5, 28.0, 21.5, 8.0]
+      }
+    ],
+    "showLegend": true,
+    "showDataLabels": true
+  }
+}
+```
+

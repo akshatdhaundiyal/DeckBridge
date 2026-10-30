@@ -5,7 +5,7 @@
 [![Python](https://img.shields.io/badge/python-3.12%20%7C%203.13-blue.svg)](https://www.python.org/)
 [![FastAPI](https://img.shields.io/badge/FastAPI-0.110+-009688.svg)](https://fastapi.tiangolo.com)
 [![python-pptx](https://img.shields.io/badge/python--pptx-1.0.2-orange.svg)](https://python-pptx.readthedocs.io/)
-[![Tests](https://img.shields.io/badge/tests-26%20passed-brightgreen.svg)]()
+[![Tests](https://img.shields.io/badge/tests-33%20passed-brightgreen.svg)]()
 
 ---
 
@@ -32,6 +32,7 @@ DeckDispatch supports discriminated union slide types with dual `camelCase` and 
 4. **`SplitSlide` (`layout: "split"`)**: 2-column comparative layout for Before/After, Problem/Solution, or Feature comparisons.
 5. **`ImageSlide` (`layout: "image"`)**: Showcase image frame with in-memory aspect ratio containment (no distortion or stretching) and captions.
 6. **`ProcessSlide` (`layout: "process"` or `"flowchart"`)**: 2 to 5 sequential process steps using native PowerPoint vector shapes (`rounded_rectangle`, `diamond`, `oval`, `rectangle`) with connecting vector arrows in both horizontal and vertical orientations.
+7. **`ChartSlide` (`layout: "chart"`)**: Native Microsoft OpenXML vector charts (Column Clustered, Bar Clustered, Line, Pie, Area) with in-memory embedded Excel spreadsheets allowing direct PowerPoint data editing.
 
 ---
 

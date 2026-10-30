@@ -1,7 +1,7 @@
 import io
 import pytest
 from pptx import Presentation
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 
 from app.core.exceptions import InvalidColorError, ImageProcessingError
 from app.engine.compiler import compiler
@@ -10,7 +10,7 @@ from app.engine.images import (
     decode_and_validate_base64_image,
     calculate_contain_bounds,
 )
-from app.engine.theme import parse_hex_color
+from app.engine.theme import parse_hex_color, calculate_adaptive_font_size
 from app.schemas.deck import (
     DeckPayload,
     DeckTheme,
@@ -24,6 +24,9 @@ from app.schemas.deck import (
     ImageSlide,
     ProcessSlide,
     ProcessStep,
+    ChartSlide,
+    ChartData,
+    ChartSeries,
 )
 
 # 1x1 pixel valid base64 PNG
@@ -78,6 +81,16 @@ class TestThemeAndColors:
 
         with pytest.raises(InvalidColorError):
             parse_hex_color("#12345")
+
+    def test_adaptive_font_sizing(self):
+        # Short text retains base font size
+        assert calculate_adaptive_font_size("Short text", base_pt=12, min_pt=9, threshold_chars=110) == Pt(12)
+        # Medium text stepped down
+        med_text = "x" * 150
+        assert calculate_adaptive_font_size(med_text, base_pt=12, min_pt=9, threshold_chars=110, step_down_rate=35) == Pt(10)
+        # Very long text clamped at min_pt
+        long_text = "x" * 300
+        assert calculate_adaptive_font_size(long_text, base_pt=12, min_pt=9, threshold_chars=110, step_down_rate=35) == Pt(9)
 
 
 class TestImageEngine:
@@ -240,6 +253,86 @@ class TestLayoutCompilation:
         )
         buf_v = compiler.compile(payload_v)
         assert buf_v.getvalue().startswith(ZIP_MAGIC_SIGNATURE)
+
+    def test_compile_chart_column_clustered(self):
+        payload = DeckPayload(
+            title="Column Chart Deck",
+            slides=[
+                ChartSlide(
+                    kicker="PERFORMANCE",
+                    title="Quarterly Growth Trajectory",
+                    chart=ChartData(
+                        chart_type="column_clustered",
+                        categories=["Q1", "Q2", "Q3", "Q4"],
+                        series=[
+                            ChartSeries(name="2025", values=[1.2, 1.8, 2.4, 3.1]),
+                            ChartSeries(name="2026", values=[2.0, 3.2, 4.5, 6.0]),
+                        ],
+                        show_legend=True,
+                        show_data_labels=True,
+                    ),
+                )
+            ],
+        )
+        buf = compiler.compile(payload)
+        data = buf.getvalue()
+        assert len(data) > 0
+        assert data.startswith(ZIP_MAGIC_SIGNATURE)
+
+    def test_compile_chart_bar_and_line(self):
+        for c_type in ["bar_clustered", "line"]:
+            payload = DeckPayload(
+                title=f"{c_type} Chart Deck",
+                slides=[
+                    ChartSlide(
+                        title=f"{c_type} Test",
+                        chart=ChartData(
+                            chart_type=c_type,
+                            categories=["Jan", "Feb", "Mar"],
+                            series=[ChartSeries(name="Series A", values=[10.0, 20.0, 30.0])],
+                        ),
+                    )
+                ],
+            )
+            buf = compiler.compile(payload)
+            assert buf.getvalue().startswith(ZIP_MAGIC_SIGNATURE)
+
+    def test_compile_chart_pie(self):
+        payload = DeckPayload(
+            title="Pie Chart Deck",
+            slides=[
+                ChartSlide(
+                    title="Market Share Breakdown",
+                    chart=ChartData(
+                        chart_type="pie",
+                        categories=["North America", "Europe", "APAC"],
+                        series=[ChartSeries(name="Share", values=[45.0, 35.0, 20.0])],
+                    ),
+                )
+            ],
+        )
+        buf = compiler.compile(payload)
+        assert buf.getvalue().startswith(ZIP_MAGIC_SIGNATURE)
+
+    def test_compile_chart_custom_series_colors(self):
+        payload = DeckPayload(
+            title="Custom Colors Chart",
+            slides=[
+                ChartSlide(
+                    title="Themed Chart",
+                    chart=ChartData(
+                        chart_type="column_clustered",
+                        categories=["A", "B"],
+                        series=[
+                            ChartSeries(name="Revenue", values=[10.0, 20.0], color="10B981"),
+                            ChartSeries(name="Cost", values=[5.0, 8.0], color="EF4444"),
+                        ],
+                    ),
+                )
+            ],
+        )
+        buf = compiler.compile(payload)
+        assert buf.getvalue().startswith(ZIP_MAGIC_SIGNATURE)
 
 
 class TestOpenXmlCompliance:

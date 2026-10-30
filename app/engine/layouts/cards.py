@@ -10,7 +10,7 @@ from app.engine.coordinates import (
 )
 from app.engine.images import decode_and_validate_base64_image, calculate_contain_bounds
 from app.engine.layouts.base import BaseLayoutBuilder
-from app.engine.theme import apply_zero_margins_and_wrap, parse_hex_color
+from app.engine.theme import apply_zero_margins_and_wrap, parse_hex_color, calculate_adaptive_font_size
 from app.schemas.deck import CardsSlide
 
 
@@ -119,7 +119,9 @@ class CardsLayoutBuilder(BaseLayoutBuilder):
             p_body = tf.paragraphs[0] if first_p else tf.add_paragraph()
             p_body.text = card.body
             p_body.font.name = self.theme.font_family
-            p_body.font.size = Pt(12)
+            p_body.font.size = calculate_adaptive_font_size(
+                card.body, base_pt=12, min_pt=9, threshold_chars=110, step_down_rate=35
+            )
             p_body.font.color.rgb = muted_color
 
             # 3. Optional Thumbnail Image

@@ -13,11 +13,11 @@ class CamelModel(BaseModel):
 
 
 class CardItem(CamelModel):
-    header: Optional[str] = Field(None, description="Card headline or title")
-    title: Optional[str] = Field(None, description="Alternative alias for headline")
-    body: str = Field(..., description="Card narrative or description")
-    metric: Optional[str] = Field(None, description="Prominent metric callout (e.g. '$4.2B', '10x')")
-    tag: Optional[str] = Field(None, description="Category pill or tag")
+    header: Optional[str] = Field(None, max_length=60, description="Card headline or title")
+    title: Optional[str] = Field(None, max_length=60, description="Alternative alias for headline")
+    body: str = Field(..., max_length=300, description="Card narrative or description")
+    metric: Optional[str] = Field(None, max_length=16, description="Prominent metric callout (e.g. '$4.2B', '10x')")
+    tag: Optional[str] = Field(None, max_length=24, description="Category pill or tag")
     image_base64: Optional[str] = Field(None, description="Optional base64 image thumbnail inside card")
     accent_color: Optional[str] = Field(None, description="Optional hex color override")
 
@@ -46,6 +46,26 @@ class ProcessStep(CamelModel):
     body: Optional[str] = Field(None, description="Brief description of the process step")
     shape_type: Literal["rounded_rectangle", "rectangle", "diamond", "oval"] = "rounded_rectangle"
     accent_color: Optional[str] = Field(None, description="Optional step color override")
+
+
+class ChartSeries(CamelModel):
+    name: str = Field(..., description="Series label (e.g. '2025' or 'Revenue')")
+    values: list[float] = Field(..., description="Numeric data points corresponding to categories")
+    color: Optional[str] = Field(None, description="Optional hex color override for series")
+
+
+class ChartData(CamelModel):
+    chart_type: Literal[
+        "bar_clustered", "bar",
+        "column_clustered", "column",
+        "line",
+        "pie",
+        "area"
+    ] = Field("column_clustered", description="PowerPoint native chart type")
+    categories: list[str] = Field(..., min_length=1, description="Category labels (X-axis or slices)")
+    series: list[ChartSeries] = Field(..., min_length=1, description="Data series")
+    show_legend: bool = Field(True, description="Display chart legend")
+    show_data_labels: bool = Field(False, description="Display data point numbers")
 
 
 # --- Slide Models with Discriminated Union ---
@@ -92,8 +112,13 @@ class ProcessSlide(BaseSlide):
     steps: list[ProcessStep] = Field(..., min_length=2, max_length=5, description="2 to 5 steps")
 
 
+class ChartSlide(BaseSlide):
+    layout: Literal["chart"] = "chart"
+    chart: ChartData
+
+
 SlideUnion = Annotated[
-    Union[TitleSlide, CardsSlide, TableSlide, SplitSlide, ImageSlide, ProcessSlide],
+    Union[TitleSlide, CardsSlide, TableSlide, SplitSlide, ImageSlide, ProcessSlide, ChartSlide],
     Field(discriminator="layout"),
 ]
 

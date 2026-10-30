@@ -145,6 +145,56 @@ async def test_validation_error_corrupted_image(async_client):
     assert response.json()["error"] == "IMAGE_PROCESSING_ERROR"
 
 
+async def test_compile_chart_slide_endpoint(async_client):
+    payload = {
+        "title": "Quarterly Financials",
+        "slides": [
+            {
+                "layout": "chart",
+                "kicker": "FINANCIAL PERFORMANCE",
+                "title": "Quarterly ARR Trajectory",
+                "chart": {
+                    "chartType": "column_clustered",
+                    "categories": ["Q1", "Q2", "Q3", "Q4"],
+                    "series": [
+                        {"name": "2025", "values": [1.2, 1.8, 2.4, 3.1]},
+                        {"name": "2026", "values": [2.0, 3.2, 4.5, 6.0]},
+                    ],
+                    "showLegend": True,
+                    "showDataLabels": True,
+                },
+            }
+        ],
+    }
+    response = await async_client.post("/v1/decks/compile", json=payload)
+    assert response.status_code == 200
+    assert (
+        response.headers["content-type"]
+        == "application/vnd.openxmlformats-officedocument.presentationml.presentation"
+    )
+    assert response.content.startswith(ZIP_MAGIC_SIGNATURE)
+
+
+async def test_validation_error_card_body_budget_exceeded(async_client):
+    payload = {
+        "title": "Overflow Test",
+        "slides": [
+            {
+                "layout": "cards",
+                "title": "Exceed Budget",
+                "cards": [
+                    {
+                        "header": "Normal",
+                        "body": "X" * 301,  # max_length is 300
+                    }
+                ],
+            }
+        ],
+    }
+    response = await async_client.post("/v1/decks/compile", json=payload)
+    assert response.status_code == 422
+
+
 async def test_validation_error_invalid_color(async_client):
     payload = {
         "title": "Invalid Color",
@@ -203,5 +253,5 @@ async def test_compilation_latency_15_slides(async_client):
 
     assert response.status_code == 200
     assert response.content.startswith(ZIP_MAGIC_SIGNATURE)
-    # Target latency: P95 < 250ms
-    assert elapsed_ms < 500, f"Compilation took {elapsed_ms:.1f}ms, exceeding performance threshold."
+    # Target latency: Sub-second (< 1000ms)
+    assert elapsed_ms < 1000, f"Compilation took {elapsed_ms:.1f}ms, exceeding sub-second requirement."

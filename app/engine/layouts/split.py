@@ -10,7 +10,7 @@ from app.engine.coordinates import (
 )
 from app.engine.images import decode_and_validate_base64_image, calculate_contain_bounds
 from app.engine.layouts.base import BaseLayoutBuilder
-from app.engine.theme import apply_zero_margins_and_wrap, parse_hex_color
+from app.engine.theme import apply_zero_margins_and_wrap, parse_hex_color, calculate_adaptive_font_size
 from app.schemas.deck import SplitSlide, ColumnContent
 
 
@@ -119,7 +119,9 @@ class SplitLayoutBuilder(BaseLayoutBuilder):
             p_body = tf.paragraphs[0] if first_p else tf.add_paragraph()
             p_body.text = col_content.body
             p_body.font.name = self.theme.font_family
-            p_body.font.size = Pt(13)
+            p_body.font.size = calculate_adaptive_font_size(
+                col_content.body, base_pt=13, min_pt=10, threshold_chars=130, step_down_rate=40
+            )
             p_body.font.color.rgb = default_muted_color
             p_body.space_after = Pt(8)
             first_p = False

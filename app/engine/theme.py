@@ -2,10 +2,29 @@ import re
 from dataclasses import dataclass
 from typing import Optional
 from pptx.dml.color import RGBColor
-from pptx.util import Inches
+from pptx.util import Inches, Pt
 
 from app.core.exceptions import InvalidColorError
 from app.schemas.deck import DeckTheme
+
+
+def calculate_adaptive_font_size(
+    text: str,
+    base_pt: int,
+    min_pt: int = 10,
+    threshold_chars: int = 120,
+    step_down_rate: int = 40,
+) -> Pt:
+    """Dynamically steps down font size when text length exceeds threshold_chars,
+
+    preventing shape overruns and maintaining clean typography.
+    """
+    length = len(text.strip())
+    if length <= threshold_chars:
+        return Pt(base_pt)
+
+    steps = ((length - threshold_chars) // step_down_rate) + 1
+    return Pt(max(min_pt, base_pt - steps))
 
 
 def parse_hex_color(hex_str: str) -> RGBColor:

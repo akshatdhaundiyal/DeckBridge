@@ -9,6 +9,7 @@ from app.core.exceptions import (
     UnsupportedLayoutError,
 )
 from app.engine.layouts.cards import CardsLayoutBuilder
+from app.engine.layouts.chart import ChartLayoutBuilder
 from app.engine.layouts.image import ImageLayoutBuilder
 from app.engine.layouts.process import ProcessLayoutBuilder
 from app.engine.layouts.split import SplitLayoutBuilder
@@ -48,6 +49,7 @@ class PresentationCompiler:
                 "image": ImageLayoutBuilder(prs, resolved_theme),
                 "process": ProcessLayoutBuilder(prs, resolved_theme),
                 "flowchart": ProcessLayoutBuilder(prs, resolved_theme),
+                "chart": ChartLayoutBuilder(prs, resolved_theme),
             }
 
             for slide_model in payload.slides:
