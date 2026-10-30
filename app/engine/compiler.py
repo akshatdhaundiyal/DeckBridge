@@ -5,7 +5,7 @@ from pptx.util import Inches
 from app.core.config import settings
 from app.core.exceptions import (
     CompilationError,
-    DeckDispatchError,
+    DeckBridgeError,
     UnsupportedLayoutError,
 )
 from app.engine.layouts.cards import CardsLayoutBuilder
@@ -64,7 +64,7 @@ class PresentationCompiler:
             buffer.seek(0)
             return buffer
 
-        except DeckDispatchError:
+        except DeckBridgeError:
             raise
         except Exception as exc:
             raise CompilationError(f"Failed to compile presentation: {exc}") from exc

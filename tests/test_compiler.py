@@ -176,7 +176,7 @@ class TestLayoutCompilation:
                     table=TableData(
                         headers=["Engine", "Latency", "Memory"],
                         rows=[
-                            ["DeckDispatch", "< 200ms", "Zero Disk"],
+                            ["DeckBridge", "< 200ms", "Zero Disk"],
                             ["Legacy Script", "> 3000ms", "Local File /tmp"],
                         ],
                     ),
@@ -201,7 +201,7 @@ class TestLayoutCompilation:
                         items=["Brittle iframe downloads", "Font clipping"],
                     ),
                     right_column=ColumnContent(
-                        header="DeckDispatch Engine",
+                        header="DeckBridge Engine",
                         body="Headless serverless compiler.",
                         items=["Sub-second in-memory stream", "100% OpenXML compliance"],
                     ),

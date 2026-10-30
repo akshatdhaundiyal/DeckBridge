@@ -53,7 +53,7 @@ PRD_PAYLOAD = {
             "kicker": "COMPETITIVE MATRIX",
             "title": "Feature Breakdown by Category",
             "table": {
-                "headers": ["Feature", "Legacy Web Tools", "DeckDispatch"],
+                "headers": ["Feature", "Legacy Web Tools", "DeckBridge"],
                 "rows": [
                     ["Vector Shapes", "No (Rasterized)", "Yes (Native OpenXML)"],
                     ["Sandbox Resilient", "No (Iframe blocks)", "Yes (Serverless Stream)"],
@@ -77,7 +77,7 @@ async def test_health_check(async_client):
     assert response.status_code == 200
     json_data = response.json()
     assert json_data["status"] == "healthy"
-    assert json_data["service"] == "DeckDispatch"
+    assert json_data["service"] == "DeckBridge"
 
 
 async def test_compile_prd_contract(async_client):

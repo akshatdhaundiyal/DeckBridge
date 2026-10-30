@@ -1,4 +1,4 @@
-# DeckDispatch
+# DeckBridge
 
 > High-performance, headless presentation compiler that transforms structured JSON into native 16:9 widescreen Microsoft OpenXML (`.pptx`) presentations in sub-second latency.
 
@@ -9,11 +9,11 @@
 
 ---
 
-## Why DeckDispatch?
+## Why DeckBridge?
 
 Large Language Models excel at semantic structuring and narrative design, but fail when asked to compile binary OpenXML files directly in client-side browser sandboxes (dropping CDN dependencies, hitting iframe download security blocks, or producing corrupted XML).
 
-**DeckDispatch** decouples content generation from file compilation:
+**DeckBridge** decouples content generation from file compilation:
 - **Zero Client-Side Sandbox Failures**: Replaces `PptxGenJS`, canvas rendering, and browser screenshot hacks with pure server-side OpenXML compilation via `python-pptx`.
 - **Zero Disk Persistence**: Presentation files are assembled purely in memory and streamed directly via `io.BytesIO()`.
 - **OpenXML 16:9 Compliance**: Enforces exact widescreen dimensions (`13.333"` × `7.5"`), hex color sanitization, explicit zero-margin text frames, and forced word-wrapping to prevent font metric clipping.
@@ -24,7 +24,7 @@ Large Language Models excel at semantic structuring and narrative design, but fa
 
 ## Supported Slide Layouts
 
-DeckDispatch supports discriminated union slide types with dual `camelCase` and `snake_case` schema compatibility:
+DeckBridge supports discriminated union slide types with dual `camelCase` and `snake_case` schema compatibility:
 
 1. **`TitleSlide` (`layout: "title"`)**: Hero presentation title with eyebrow kicker, high-impact headline, subtitle, and brand accent line.
 2. **`CardsSlide` (`layout: "cards"`)**: Dynamic grid of 1 to 4 executive cards supporting large metric callouts (`"$4.2B"`, `"10x"`), category pills, and optional thumbnail images.

@@ -1,6 +1,6 @@
-# Getting Started with DeckDispatch
+# Getting Started with DeckBridge
 
-This guide walks you through setting up, running, testing, and containerizing DeckDispatch.
+This guide walks you through setting up, running, testing, and containerizing DeckBridge.
 
 ---
 
@@ -83,12 +83,12 @@ pytest -v tests/
 
 ### Build the Image
 ```bash
-docker build -t deckdispatch:latest .
+docker build -t deckbridge:latest .
 ```
 
 ### Run the Container
 ```bash
-docker run -d --name deckdispatch -p 8000:8000 deckdispatch:latest
+docker run -d --name deckbridge -p 8000:8000 deckbridge:latest
 ```
 
 ### Test the Running Container

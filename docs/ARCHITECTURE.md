@@ -1,12 +1,12 @@
-# DeckDispatch Architecture & System Design
+# DeckBridge Architecture & System Design
 
-DeckDispatch is a high-performance headless presentation compiler that translates declarative JSON slide payloads directly into valid, widescreen (16:9) Microsoft OpenXML `.pptx` presentations using **FastAPI** and **python-pptx**.
+DeckBridge is a high-performance headless presentation compiler that translates declarative JSON slide payloads directly into valid, widescreen (16:9) Microsoft OpenXML `.pptx` presentations using **FastAPI** and **python-pptx**.
 
 ---
 
 ## 1. Architectural Philosophy & Invariants
 
-DeckDispatch was designed to solve the failure modes of client-side presentation rendering (e.g., `PptxGenJS`, headless browser screen-scraping, and canvas rasterization) in agentic runtimes.
+DeckBridge was designed to solve the failure modes of client-side presentation rendering (e.g., `PptxGenJS`, headless browser screen-scraping, and canvas rasterization) in agentic runtimes.
 
 ```
 ┌──────────────────────────────────────┐
@@ -17,7 +17,7 @@ DeckDispatch was designed to solve the failure modes of client-side presentation
                    │ POST /v1/decks/compile (JSON)
                    ▼
 ┌──────────────────────────────────────┐
-│  DeckDispatch Microservice           │
+│  DeckBridge Microservice             │
 │  ├── Pydantic v2 Schema Gate         │
 │  ├── Dynamic Coordinate Engine       │
 │  ├── In-Memory Image Scaler (Pillow) │
@@ -48,7 +48,7 @@ DeckDispatch was designed to solve the failure modes of client-side presentation
 
 ## 2. Dynamic Coordinate Engine
 
-Hardcoding coordinates causes brittle layouts when the number of elements varies. DeckDispatch uses a dynamic bounding formula in [`app/engine/coordinates.py`](file:///d:/lab/projects/DeckBridge/app/engine/coordinates.py):
+Hardcoding coordinates causes brittle layouts when the number of elements varies. DeckBridge uses a dynamic bounding formula in [`app/engine/coordinates.py`](file:///d:/lab/projects/DeckBridge/app/engine/coordinates.py):
 
 ### Column Spacing Formula
 ```python
@@ -70,7 +70,7 @@ def get_column_bounds(
 
 ## 3. In-Memory Image Engine & Aspect Ratio Containment
 
-DeckDispatch ingests images as base64 data strings without making external network calls.
+DeckBridge ingests images as base64 data strings without making external network calls.
 
 ### Contain & Center Algorithm
 To prevent images from being stretched or distorted when placed in presentation boxes, [`app/engine/images.py`](file:///d:/lab/projects/DeckBridge/app/engine/images.py) inspects the natural dimensions with Pillow and calculates proportional containment bounds:

@@ -1,5 +1,5 @@
 [project]
-name = "deckdispatch"
+name = "deckbridge"
 version = "1.0.0"
 description = "High-performance headless presentation compiler (FastAPI + python-pptx)"
 readme = "README.md"

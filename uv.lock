@@ -61,7 +61,7 @@ wheels = [
 ]
 
 [[package]]
-name = "deckdispatch"
+name = "deckbridge"
 version = "1.0.0"
 source = { virtual = "." }
 dependencies = [

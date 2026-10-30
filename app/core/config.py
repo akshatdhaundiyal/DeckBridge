@@ -2,9 +2,9 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_prefix="DECKDISPATCH_", case_sensitive=False)
+    model_config = SettingsConfigDict(env_prefix="DECKBRIDGE_", case_sensitive=False)
 
-    APP_NAME: str = "DeckDispatch"
+    APP_NAME: str = "DeckBridge"
     APP_VERSION: str = "1.0.0"
     DEBUG: bool = False
 

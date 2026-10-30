@@ -11,7 +11,7 @@
 ## 1. Scope Freeze & Context (Gate 0)
 
 ### 1.1 Problem Statement
-DeckDispatch currently produces qualitative slides (Cards, Tables, Split, Process Flowcharts, and Showcase Images). However, enterprise presentations require quantitative visual evidence (quarterly ARR, revenue breakdown, customer cohort retention). 
+DeckBridge currently produces qualitative slides (Cards, Tables, Split, Process Flowcharts, and Showcase Images). However, enterprise presentations require quantitative visual evidence (quarterly ARR, revenue breakdown, customer cohort retention). 
 
 Furthermore, LLMs frequently emit verbose text that overruns bounding boxes because `python-pptx` does not natively auto-shrink text frames to fit shapes.
 

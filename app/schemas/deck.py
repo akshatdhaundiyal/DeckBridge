@@ -135,6 +135,6 @@ class DeckTheme(CamelModel):
 
 
 class DeckPayload(CamelModel):
-    title: str = Field("DeckDispatch Presentation", description="Presentation title")
+    title: str = Field("DeckBridge Presentation", description="Presentation title")
     theme: DeckTheme = Field(default_factory=DeckTheme)
     slides: list[SlideUnion] = Field(..., min_length=1, description="List of structured slides")

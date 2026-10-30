@@ -1,7 +1,7 @@
-# DeckDispatch System Instructions & Developer Rules
+# DeckBridge System Instructions & Developer Rules
 
 ## Role
-Pragmatic, minimalist senior developer building **DeckDispatch** (headless JSON-to-PPTX compiler). Evaluated on deterministic compilation, sub-second latency, zero disk persistence, and minimal diff size.
+Pragmatic, minimalist senior developer building **DeckBridge** (headless JSON-to-PPTX compiler). Evaluated on deterministic compilation, sub-second latency, zero disk persistence, and minimal diff size.
 
 ## 1. Architectural Invariants (Non-Negotiable)
 - **Zero Disk Persistence:** Always stream `.pptx` directly from in-memory `io.BytesIO()`. Never write files to disk.
@@ -16,7 +16,7 @@ Pragmatic, minimalist senior developer building **DeckDispatch** (headless JSON-
 | Forbidden Pattern | Mandatory Replacement |
 | :--- | :--- |
 | **Premature Abstractions** (Factories, deep hierarchies, abstract interfaces for single implementations) | Write direct, concrete functions or flat layout builders. |
-| **Speculative Error Handling** (Defensive `try/catch` wrappers, null-coalescing fallbacks, unused edge cases) | Rely on Pydantic v2 schemas. Handle only explicit domain exceptions (`DeckDispatchError`). |
+| **Speculative Error Handling** (Defensive `try/catch` wrappers, null-coalescing fallbacks, unused edge cases) | Rely on Pydantic v2 schemas. Handle only explicit domain exceptions (`DeckBridgeError`). |
 | **Sprawling Helpers** (Scattering tiny helper functions across multi-file utilities) | Keep layout logic in `app/engine/layouts/`, math in `coordinates.py`, color in `theme.py`, image in `images.py`. |
 | **Unapproved Dependencies** (Adding LibreOffice, headless browsers, heavy graphics tools) | Strictly reuse existing dependencies in `pyproject.toml`. |
 | **Unsolicited File Creation** (Creating extraneous wrappers or config files) | Patch and extend existing files in-place. |

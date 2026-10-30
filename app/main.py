@@ -4,7 +4,7 @@ from fastapi.responses import JSONResponse
 
 from app.api.v1.router import api_router
 from app.core.config import settings
-from app.core.exceptions import DeckDispatchError
+from app.core.exceptions import DeckBridgeError
 
 app = FastAPI(
     title=settings.APP_NAME,
@@ -34,8 +34,8 @@ async def health_check():
     }
 
 
-@app.exception_handler(DeckDispatchError)
-async def deck_dispatch_error_handler(request: Request, exc: DeckDispatchError):
+@app.exception_handler(DeckBridgeError)
+async def deck_bridge_error_handler(request: Request, exc: DeckBridgeError):
     return JSONResponse(
         status_code=422,
         content={

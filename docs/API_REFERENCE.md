@@ -1,6 +1,6 @@
-# DeckDispatch API Reference
+# DeckBridge API Reference
 
-DeckDispatch provides a lightweight, stateless REST API for validating and compiling declarative JSON slide payloads into native `.pptx` presentation files.
+DeckBridge provides a lightweight, stateless REST API for validating and compiling declarative JSON slide payloads into native `.pptx` presentation files.
 
 ---
 
@@ -24,7 +24,7 @@ http://localhost:8000
 ## 1. Health Check
 
 ### `GET /health`
-Verifies that the DeckDispatch service is healthy and responsive.
+Verifies that the DeckBridge service is healthy and responsive.
 
 #### Request
 ```bash
@@ -35,7 +35,7 @@ curl -X GET http://localhost:8000/health
 ```json
 {
   "status": "healthy",
-  "service": "DeckDispatch",
+  "service": "DeckBridge",
   "version": "1.0.0"
 }
 ```

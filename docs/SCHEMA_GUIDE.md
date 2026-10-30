@@ -1,6 +1,6 @@
-# DeckDispatch Slide Schema Guide
+# DeckBridge Slide Schema Guide
 
-DeckDispatch slide types are discriminated on the `layout` attribute. All schemas support both `camelCase` (standard frontend/JSON style) and `snake_case` (Python style).
+DeckBridge slide types are discriminated on the `layout` attribute. All schemas support both `camelCase` (standard frontend/JSON style) and `snake_case` (Python style).
 
 ---
 
@@ -96,7 +96,7 @@ Native OpenXML table with themed header fill, alternating zebra row striping, an
   "kicker": "COMPETITIVE MATRIX",
   "title": "Head-to-Head Architecture Breakdown",
   "table": {
-    "headers": ["Capability", "Legacy Web Tools", "DeckDispatch"],
+    "headers": ["Capability", "Legacy Web Tools", "DeckBridge"],
     "columnWidths": [3.5, 4.0, 3.833],
     "rows": [
       ["Vector Shapes", "No (Rasterized / Canvas)", "Yes (Native OpenXML)"],
@@ -128,7 +128,7 @@ Two-column comparative layout for Before/After, Problem/Solution, or Feature com
     ]
   },
   "rightColumn": {
-    "header": "DeckDispatch Engine",
+    "header": "DeckBridge Engine",
     "body": "Pure headless server-side presentation compilation via python-pptx:",
     "items": [
       "In-memory io.BytesIO streaming with zero disk I/O",
